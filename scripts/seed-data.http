@@ -1,0 +1,786 @@
+### EMS 테스트 데이터 시드 스크립트
+### HTTP 파일을 이용한 Device 및 EnergyReading 생성
+
+# API 기본 설정
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+### 1. Health Check
+GET {{baseUrl}}/api/health
+Accept: application/json
+
+### 2. Device 생성 - 회의실 미터
+POST {{baseUrl}}/api/devices
+Content-Type: {{contentType}}
+
+{
+  "name": "회의실 에너지미터",
+  "type": "METER",
+  "location": "3층 회의실 A",
+  "active": true
+}
+
+### 3. Device 생성 - 로비 센서
+POST {{baseUrl}}/api/devices
+Content-Type: {{contentType}}
+
+{
+  "name": "로비 온도센서",
+  "type": "SENSOR", 
+  "location": "1층 메인 로비",
+  "active": true
+}
+
+### 4. Device 생성 - 사무실 컨트롤러
+POST {{baseUrl}}/api/devices
+Content-Type: {{contentType}}
+
+{
+  "name": "사무실 에어컨 컨트롤러",
+  "type": "CONTROLLER",
+  "location": "2층 사무실",
+  "active": true
+}
+
+### 5. 생성된 Device 목록 확인
+GET {{baseUrl}}/api/devices
+Accept: application/json
+
+### 6. EnergyReading 생성 - Device ID 1 (회의실 미터)
+### 최근 24시간, 1시간 간격으로 24개 데이터 생성
+
+# 24시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-21T15:00:00.000Z",
+  "kwh": 12.5
+}
+
+# 23시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-21T16:00:00.000Z",
+  "kwh": 13.2
+}
+
+# 22시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-21T17:00:00.000Z",
+  "kwh": 14.8
+}
+
+# 21시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-21T18:00:00.000Z",
+  "kwh": 16.3
+}
+
+# 20시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-21T19:00:00.000Z",
+  "kwh": 18.7
+}
+
+# 19시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-21T20:00:00.000Z",
+  "kwh": 15.4
+}
+
+# 18시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-21T21:00:00.000Z",
+  "kwh": 12.1
+}
+
+# 17시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-21T22:00:00.000Z",
+  "kwh": 9.8
+}
+
+# 16시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-21T23:00:00.000Z",
+  "kwh": 8.2
+}
+
+# 15시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T00:00:00.000Z",
+  "kwh": 7.5
+}
+
+# 14시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T01:00:00.000Z",
+  "kwh": 7.1
+}
+
+# 13시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T02:00:00.000Z",
+  "kwh": 6.8
+}
+
+# 12시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T03:00:00.000Z",
+  "kwh": 6.5
+}
+
+# 11시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T04:00:00.000Z",
+  "kwh": 6.3
+}
+
+# 10시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T05:00:00.000Z",
+  "kwh": 6.9
+}
+
+# 9시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T06:00:00.000Z",
+  "kwh": 8.4
+}
+
+# 8시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T07:00:00.000Z",
+  "kwh": 11.2
+}
+
+# 7시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T08:00:00.000Z",
+  "kwh": 14.6
+}
+
+# 6시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T09:00:00.000Z",
+  "kwh": 17.3
+}
+
+# 5시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T10:00:00.000Z",
+  "kwh": 19.8
+}
+
+# 4시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T11:00:00.000Z",
+  "kwh": 22.1
+}
+
+# 3시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T12:00:00.000Z",
+  "kwh": 24.5
+}
+
+# 2시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T13:00:00.000Z",
+  "kwh": 26.8
+}
+
+# 1시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 1,
+  "ts": "2025-01-22T14:00:00.000Z",
+  "kwh": 28.3
+}
+
+### 7. EnergyReading 생성 - Device ID 2 (로비 센서)
+
+# 24시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-21T15:00:00.000Z",
+  "kwh": 5.2
+}
+
+# 23시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-21T16:00:00.000Z",
+  "kwh": 5.8
+}
+
+# 22시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-21T17:00:00.000Z",
+  "kwh": 6.4
+}
+
+# 21시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-21T18:00:00.000Z",
+  "kwh": 7.1
+}
+
+# 20시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-21T19:00:00.000Z",
+  "kwh": 8.3
+}
+
+# 19시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-21T20:00:00.000Z",
+  "kwh": 7.9
+}
+
+# 18시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-21T21:00:00.000Z",
+  "kwh": 6.7
+}
+
+# 17시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-21T22:00:00.000Z",
+  "kwh": 5.5
+}
+
+# 16시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-21T23:00:00.000Z",
+  "kwh": 4.8
+}
+
+# 15시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T00:00:00.000Z",
+  "kwh": 4.2
+}
+
+# 14시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T01:00:00.000Z",
+  "kwh": 3.9
+}
+
+# 13시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T02:00:00.000Z",
+  "kwh": 3.7
+}
+
+# 12시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T03:00:00.000Z",
+  "kwh": 3.5
+}
+
+# 11시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T04:00:00.000Z",
+  "kwh": 3.4
+}
+
+# 10시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T05:00:00.000Z",
+  "kwh": 3.8
+}
+
+# 9시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T06:00:00.000Z",
+  "kwh": 4.6
+}
+
+# 8시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T07:00:00.000Z",
+  "kwh": 5.8
+}
+
+# 7시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T08:00:00.000Z",
+  "kwh": 7.2
+}
+
+# 6시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T09:00:00.000Z",
+  "kwh": 8.4
+}
+
+# 5시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T10:00:00.000Z",
+  "kwh": 9.1
+}
+
+# 4시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T11:00:00.000Z",
+  "kwh": 9.6
+}
+
+# 3시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T12:00:00.000Z",
+  "kwh": 10.2
+}
+
+# 2시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T13:00:00.000Z",
+  "kwh": 10.8
+}
+
+# 1시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 2,
+  "ts": "2025-01-22T14:00:00.000Z",
+  "kwh": 11.3
+}
+
+### 8. EnergyReading 생성 - Device ID 3 (사무실 컨트롤러)
+
+# 24시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-21T15:00:00.000Z",
+  "kwh": 18.7
+}
+
+# 23시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-21T16:00:00.000Z",
+  "kwh": 19.4
+}
+
+# 22시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-21T17:00:00.000Z",
+  "kwh": 21.2
+}
+
+# 21시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-21T18:00:00.000Z",
+  "kwh": 23.8
+}
+
+# 20시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-21T19:00:00.000Z",
+  "kwh": 25.6
+}
+
+# 19시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-21T20:00:00.000Z",
+  "kwh": 22.3
+}
+
+# 18시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-21T21:00:00.000Z",
+  "kwh": 19.7
+}
+
+# 17시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-21T22:00:00.000Z",
+  "kwh": 16.8
+}
+
+# 16시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-21T23:00:00.000Z",
+  "kwh": 14.2
+}
+
+# 15시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T00:00:00.000Z",
+  "kwh": 12.6
+}
+
+# 14시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T01:00:00.000Z",
+  "kwh": 11.8
+}
+
+# 13시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T02:00:00.000Z",
+  "kwh": 11.2
+}
+
+# 12시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T03:00:00.000Z",
+  "kwh": 10.9
+}
+
+# 11시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T04:00:00.000Z",
+  "kwh": 10.7
+}
+
+# 10시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T05:00:00.000Z",
+  "kwh": 11.5
+}
+
+# 9시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T06:00:00.000Z",
+  "kwh": 13.8
+}
+
+# 8시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T07:00:00.000Z",
+  "kwh": 17.4
+}
+
+# 7시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T08:00:00.000Z",
+  "kwh": 21.8
+}
+
+# 6시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T09:00:00.000Z",
+  "kwh": 25.7
+}
+
+# 5시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T10:00:00.000Z",
+  "kwh": 28.9
+}
+
+# 4시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T11:00:00.000Z",
+  "kwh": 31.2
+}
+
+# 3시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T12:00:00.000Z",
+  "kwh": 33.4
+}
+
+# 2시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T13:00:00.000Z",
+  "kwh": 35.1
+}
+
+# 1시간 전
+POST {{baseUrl}}/api/readings
+Content-Type: {{contentType}}
+
+{
+  "deviceId": 3,
+  "ts": "2025-01-22T14:00:00.000Z",
+  "kwh": 36.8
+}
+
+### 9. 조회 테스트 - 특정 장치의 최근 24시간 에너지 사용량
+GET {{baseUrl}}/api/readings?deviceId=1&from=2025-01-21T15:00:00.000Z&to=2025-01-22T15:00:00.000Z
+Accept: application/json
+
+### 10. 조회 테스트 - 모든 장치의 최근 24시간 에너지 사용량
+GET {{baseUrl}}/api/readings/all?from=2025-01-21T15:00:00.000Z&to=2025-01-22T15:00:00.000Z
+Accept: application/json
+
+### 11. 조회 테스트 - 특정 장치의 최신 10개 데이터
+GET {{baseUrl}}/api/readings/device/1?limit=10
+Accept: application/json
