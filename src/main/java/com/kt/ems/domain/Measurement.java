@@ -20,7 +20,7 @@ public class Measurement {
     private Sensor sensor;
     
     @NotNull
-    @Column(name="\"value\"",nullable=false,precision=18,scale=6)
+    @Column(name="measurement_value",nullable=false,precision=18,scale=6)
     private BigDecimal value;
     
     @NotNull

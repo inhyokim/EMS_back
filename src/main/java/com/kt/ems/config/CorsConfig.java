@@ -15,11 +15,14 @@ public class CorsConfig {
                 registry.addMapping("/api/**")
                     .allowedOrigins(
                         System.getenv().getOrDefault("FRONT_ORIGIN", "http://localhost:3000"),
-                        "http://localhost:3000"
+                        "http://localhost:3000",
+                        "http://127.0.0.1:3000"
                     )
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                     .allowedHeaders("*")
-                    .allowCredentials(false);
+                    .exposedHeaders("*")
+                    .allowCredentials(false)
+                    .maxAge(3600);
             }
         };
     }

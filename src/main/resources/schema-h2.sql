@@ -14,7 +14,7 @@ create table if not exists sensor (
 create table if not exists measurement (
   id bigint auto_increment primary key,
   sensor_id bigint not null references sensor(id),
-  "value" decimal(18,6) not null,
+  measurement_value decimal(18,6) not null,
   measured_at timestamp not null
 );
 

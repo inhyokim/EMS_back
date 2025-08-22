@@ -11,7 +11,7 @@ public interface MeasurementRepository extends JpaRepository<Measurement,Long> {
     List<Measurement> findWithSensorAndLocationBetween(@Param("from") Instant from, @Param("to") Instant to);
     
     @Query(value = """
-        select s.id as sensor_id, m.measured_at as day, avg(m."value") as avg_value
+        select s.id as sensor_id, m.measured_at as day, avg(m.measurement_value) as avg_value
         from measurement m join sensor s on s.id=m.sensor_id
         where m.measured_at between :from and :to
         group by s.id, m.measured_at
@@ -20,7 +20,7 @@ public interface MeasurementRepository extends JpaRepository<Measurement,Long> {
     List<Object[]> findDailyAverage(@Param("from") Instant from, @Param("to") Instant to);
 
     @Query(value = """
-        select m.measured_at as bucket, sum(m."value") as usage
+        select m.measured_at as bucket, sum(m.measurement_value) as usage
         from measurement m
         where m.measured_at between :from and :to
         group by m.measured_at
@@ -29,7 +29,7 @@ public interface MeasurementRepository extends JpaRepository<Measurement,Long> {
     List<Object[]> weeklyUsage(@Param("from") Instant from, @Param("to") Instant to);
 
     @Query(value = """
-        select m.measured_at as bucket, sum(m."value") as usage
+        select m.measured_at as bucket, sum(m.measurement_value) as usage
         from measurement m
         where m.measured_at between :from and :to
         group by m.measured_at

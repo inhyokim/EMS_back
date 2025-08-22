@@ -42,15 +42,8 @@ public class CsvIngestService {
      * We map building+zone -> Location (upsert by name "building/zone"), meter_no -> Sensor.sensorName (upsert).
      * timestamp must be ISO-8601; value is decimal >= 0.
      */
-    @Transactional
     public UploadResult ingestCsv(String filename, InputStream in) throws IOException {
-        UploadBatch batch = UploadBatch.builder()
-                .fileName(filename)
-                .uploadedAt(Instant.now())
-                .totalRows(0).validRows(0).invalidRows(0)
-                .build();
-        batch = batchRepo.save(batch);
-
+        UploadBatch batch = createBatch(filename);
         List<Map<String,Object>> errList = new ArrayList<>();
 
         try (var reader = new InputStreamReader(in, StandardCharsets.UTF_8);
@@ -65,40 +58,7 @@ public class CsvIngestService {
                 total++;
                 int rowNum = (int) r.getRecordNumber();
                 try {
-                    String building = required(r, "building_name");
-                    String zone     = required(r, "zone_name");
-                    String meterNo  = required(r, "meter_no");
-                    String tsStr    = required(r, "timestamp");
-                    String valStr   = required(r, "value");
-
-                    // Parse
-                    Instant ts;
-                    try {
-                        ts = OffsetDateTime.parse(tsStr).toInstant(); // ISO-8601 expected
-                    } catch (DateTimeParseException e) {
-                        throw new IllegalArgumentException("timestamp must be ISO-8601");
-                    }
-                    BigDecimal val = new BigDecimal(valStr);
-                    if (val.signum() < 0) throw new IllegalArgumentException("value must be >= 0");
-
-                    // Upsert Location (building/zone)
-                    String locName = building + "/" + zone;
-                    Location loc = locationRepo.findAll().stream()
-                            .filter(l -> locName.equals(l.getName()))
-                            .findFirst()
-                            .orElseGet(() -> locationRepo.save(Location.builder().name(locName).build()));
-
-                    // Upsert Sensor by meter_no
-                    Sensor sensor = sensorRepo.findAll().stream()
-                            .filter(s -> meterNo.equals(s.getSensorName()))
-                            .findFirst()
-                            .orElseGet(() -> sensorRepo.save(Sensor.builder()
-                                    .sensorName(meterNo).type("POWER").location(loc).build()));
-
-                    // Save measurement
-                    measurementRepo.save(Measurement.builder()
-                            .sensor(sensor).value(val).measuredAt(ts).build());
-
+                    processRowSimple(r, rowNum);
                     ok++;
                 } catch (Exception e) {
                     bad++;
@@ -113,12 +73,95 @@ public class CsvIngestService {
                     errList.add(Map.of("row", rowNum, "error", e.getMessage()));
                 }
             }
-            batch.setTotalRows(total);
-            batch.setValidRows(ok);
-            batch.setInvalidRows(bad);
-            batchRepo.save(batch);
+            updateBatch(batch, total, ok, bad);
         }
         return new UploadResult(batch.getId(), batch.getTotalRows(), batch.getValidRows(), batch.getInvalidRows(), errList);
+    }
+
+    private UploadBatch createBatch(String filename) {
+        UploadBatch batch = UploadBatch.builder()
+                .fileName(filename)
+                .uploadedAt(Instant.now())
+                .totalRows(0).validRows(0).invalidRows(0)
+                .build();
+        return batchRepo.save(batch);
+    }
+
+    private void processRowSimple(CSVRecord r, int rowNum) {
+        String building = required(r, "building_name");
+        String zone     = required(r, "zone_name");
+        String meterNo  = required(r, "meter_no");
+        String tsStr    = required(r, "timestamp");
+        String valStr   = required(r, "value");
+
+        // Parse
+        Instant ts;
+        try {
+            ts = OffsetDateTime.parse(tsStr).toInstant(); // ISO-8601 expected
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("timestamp must be ISO-8601");
+        }
+        BigDecimal val = new BigDecimal(valStr);
+        if (val.signum() < 0) throw new IllegalArgumentException("value must be >= 0");
+
+        // Upsert Location (building/zone)
+        String locName = building + "/" + zone;
+        Location loc = locationRepo.findByName(locName)
+                .orElseGet(() -> locationRepo.save(Location.builder().name(locName).build()));
+
+        // Upsert Sensor by meter_no
+        Sensor sensor = sensorRepo.findBySensorName(meterNo)
+                .orElseGet(() -> sensorRepo.save(Sensor.builder()
+                        .sensorName(meterNo).type("POWER").location(loc).build()));
+
+        // Save measurement
+        measurementRepo.save(Measurement.builder()
+                .sensor(sensor).value(val).measuredAt(ts).build());
+    }
+
+    private void processRow(CSVRecord r, int rowNum, UploadBatch batch) {
+        try {
+            String building = required(r, "building_name");
+            String zone     = required(r, "zone_name");
+            String meterNo  = required(r, "meter_no");
+            String tsStr    = required(r, "timestamp");
+            String valStr   = required(r, "value");
+
+            // Parse
+            Instant ts;
+            try {
+                ts = OffsetDateTime.parse(tsStr).toInstant(); // ISO-8601 expected
+            } catch (DateTimeParseException e) {
+                throw new IllegalArgumentException("timestamp must be ISO-8601");
+            }
+            BigDecimal val = new BigDecimal(valStr);
+            if (val.signum() < 0) throw new IllegalArgumentException("value must be >= 0");
+
+            // Upsert Location (building/zone)
+            String locName = building + "/" + zone;
+            Location loc = locationRepo.findByName(locName)
+                    .orElseGet(() -> locationRepo.save(Location.builder().name(locName).build()));
+
+            // Upsert Sensor by meter_no
+            Sensor sensor = sensorRepo.findBySensorName(meterNo)
+                    .orElseGet(() -> sensorRepo.save(Sensor.builder()
+                            .sensorName(meterNo).type("POWER").location(loc).build()));
+
+            // Save measurement
+            measurementRepo.save(Measurement.builder()
+                    .sensor(sensor).value(val).measuredAt(ts).build());
+        } catch (Exception e) {
+            System.err.println("Error processing row " + rowNum + ": " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    private void updateBatch(UploadBatch batch, int total, int ok, int bad) {
+        batch.setTotalRows(total);
+        batch.setValidRows(ok);
+        batch.setInvalidRows(bad);
+        batchRepo.save(batch);
     }
 
     private static String required(CSVRecord r, String key){

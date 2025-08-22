@@ -10,7 +10,7 @@ insert into sensor(id, sensor_name, type, location_id) values
   (2, 'CHILLER_TEMP','TEMP',2);
 
 -- 샘플 측정 데이터 (최근 날짜로 업데이트)
-insert into measurement(sensor_id, "value", measured_at) values
+insert into measurement(sensor_id, measurement_value, measured_at) values
   (1, 123.45, '2025-08-21 07:00:00'),
   (1, 125.67, '2025-08-21 08:00:00'),
   (1, 120.89, '2025-08-21 09:00:00'),
